@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>document</title>
+</head>
+<body>
+    <form id="reg">
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div id="telefonDiv" style="display: none;">
+            <label for="telefon">Telefon:</label>
+            <input type="tel" id="telefon" name="telefon" pattern="[0-9]*" maxlength="15">
+        </div>
+        <div id="dataUrodzeniaDiv">
+            <label for="dataUrodzenia">Data urodzenia:</label>
+            <input type="date" id="dataUrodzenia" name="dataUrodzenia" required>
+        </div>
+        <div>
+            <label for="haslo">Hasło:</label>
+            <input type="password" id="haslo" name="haslo" required>
+        </div>
+        <div>
+            <label for="kraj">Kraj:</label>
+            <select id="kraj" name="kraj" required>
+                <option value="">Wybierz kraj</option>
+                <option value="Poland">Polska</option>
+                <option value="USA">Stany Zjednoczone</option>
+                <option value="UK">Wielka Brytania</option>
+            </select>
+        </div>
+        <div>
+            <input type="checkbox" id="telefonCheckbox" name="telefonCheckbox">
+            <label for="telefonCheckbox">telefon zamiast maila</label>
+        </div>
+        <button type="submit">Zarejestruj się</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('reg');
+
+        form.addEventListener('submit', function(event) {
+            const email = document.getElementById('email').value;
+            const haslo = document.getElementById('haslo').value;
+            const kraj = document.getElementById('kraj').value;
+            const dataUrodzenia = document.getElementById('dataUrodzenia').value;
+            const telefonCheckbox = document.getElementById('telefonCheckbox').checked;
+            const telefonDiv = document.getElementById('telefonDiv');
+            const dataUrodzeniaDiv = document.getElementById('dataUrodzeniaDiv');
+
+            const em = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const ps = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/;
+
+            if (telefonCheckbox) {
+                const telefon = document.getElementById('telefon').value;
+                if (!telefon.match(/^\d+$/)) {
+                    alert('Numer telefonu powinien składać się tylko z cyfr.');
+                    event.preventDefault();
+                    return;
+                }
+            } else {
+                if (!em.test(email)) {
+                    alert('Proszę podać poprawny adres email.');
+                    event.preventDefault();
+                    return;
+                }
+            }
+
+            if (!ps.test(haslo)) {
+                alert('Hasło powinno mieć przynajmniej 8 znaków, zawierać co najmniej jedną cyfrę oraz jeden znak specjalny.');
+                event.preventDefault();
+                return;
+            }
+
+
+            if (kraj === '') {
+                alert('Proszę wybrać kraj.');
+                event.preventDefault();
+                return;
+            }
+
+
+            const currentDate = new Date();
+            const selectedDate = new Date(dataUrodzenia);
+            const age = currentDate.getFullYear() - selectedDate.getFullYear();
+            const monthDiff = currentDate.getMonth() - selectedDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < selectedDate.getDate())) {
+                age--;
+            }
+            if (age < 18) {
+                alert('Musisz być pełnoletni, aby się zarejestrować.');
+                event.preventDefault();
+                return;
+            }
+        });
+
+        const telefonCheckbox = document.getElementById('telefonCheckbox');
+        const emailInput = document.getElementById('email');
+        const telefonDiv = document.getElementById('telefonDiv');
+
+        telefonCheckbox.addEventListener('change', function() {
+            if (telefonCheckbox.checked) {
+                emailInput.style.display = 'none';
+                telefonDiv.style.display = 'block';
+            } else {
+                emailInput.style.display = 'block';
+                telefonDiv.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

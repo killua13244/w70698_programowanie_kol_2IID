@@ -1,0 +1,3 @@
+git push - Umożliwia przeniesienie gałęzi lokalnej do innego repozytorium.
+git checkout - Wyewidencjonowanie gałęzi Polecenie git checkout umożliwia poruszanie się między gałęziami utworzonymi za pomocą polecenia git branch.
+Git commit - migawka Twojego repozytorium w określonym momencie.
